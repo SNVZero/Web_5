@@ -232,36 +232,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('checkbox_error', '', 1);
     }
     require ('db.php');
-    $user = 'u46878';
-    $pass = '2251704';
-    $db = new PDO('mysql:host=localhost;dbname=u46878', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 
         try{
-
-            $stmt = $db->prepare("INSERT INTO people SET name = ?, mail = ?, bio = ?, date = ?, gender = ?, limbs = ?");
-            $stmt -> execute(array($_POST['name'],$_POST['email'],$_POST['bio'],$_POST['year'],$_POST['gender'],$_POST['limbs']));
-
-            $res = $db->query("SELECT max(id) FROM people");
-            $row = $res->fetch();
-            $count = (int) $row[0];
-
-
-
-            $stmt = $db->prepare("INSERT INTO ability SET human_id = ?, superabilities = ?");
-            $stmt -> execute([$count, $ability]);
-
-            $message['success']= TRUE;
-
-
             $log = generateLogin(6);
             $passw =generatePassword(6);
             setcookie('login',$log);
             setcookie('password',$passw);
 
-            $users = R::dispense('users');
-            $users->login = '111';
-            $users->password = password_hash('1212', PASSWORD_DEFAULT);
-            R::store($users);
+            $stmt = $db->prepare("INSERT INTO USERS SET login = ?, pass = ?, name = ?, mail = ?, bio = ?, date = ?, gender = ?, limbs = ?");
+            $stmt -> execute(array($log,$passw,$_POST['name'],$_POST['email'],$_POST['bio'],$_POST['year'],$_POST['gender'],$_POST['limbs']));
+
+            $res = $db->query("SELECT max(id) FROM USERS");
+            $row = $res->fetch();
+            $count = (int) $row[0];
+
+
+
+            $stmt = $db->prepare("INSERT INTO super_power SET human_id = ?, superabilities = ?");
+            $stmt -> execute([$count, $ability]);
+
+            $message['success']= TRUE;
 
 
         }catch(PDOException $e){
