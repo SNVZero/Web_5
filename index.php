@@ -236,11 +236,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         try{
             $log = generateLogin(6);
             $passw =generatePassword(6);
+            $hash = password_hash($passw, PASSWORD_DEFAULT);
             setcookie('login',$log);
             setcookie('password',$passw);
 
             $stmt = $db->prepare("INSERT INTO USERS SET login = ?, pass = ?, name = ?, mail = ?, bio = ?, date = ?, gender = ?, limbs = ?");
-            $stmt -> execute(array($log,$passw,$_POST['name'],$_POST['email'],$_POST['bio'],$_POST['year'],$_POST['gender'],$_POST['limbs']));
+            $stmt -> execute(array($log,$hash,$_POST['name'],$_POST['email'],$_POST['bio'],$_POST['year'],$_POST['gender'],$_POST['limbs']));
 
             $res = $db->query("SELECT max(id) FROM USERS");
             $row = $res->fetch();
