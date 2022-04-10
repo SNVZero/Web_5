@@ -1,9 +1,5 @@
 <?php
-require ('../db.php');
-
-
-
-
+require ('/../db.php');
 ?>
 
 <div class="popup" id="popup">
