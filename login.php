@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if($login != $_POST['login']){
         $errors = TRUE;
         setcookie('login_value',$_POST['login']);
+        setcookie('login_error','1');
 
     }else{
         setcookie('login_value',$_POST['login']);
@@ -48,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             header('Location: index.php');
         }else{
             setcookie('password_value',$_POST['password']);
+            setcookie('password_error','1');
             $errors = TRUE;
         }
         if ($errors) {
@@ -75,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     <div class="popup__title">Вход</div>
                     <div class="popup__text">
                             <div>
-                                <input type="text" name="login" class="login__elem" placeholder="Логин" value="<?php @$val['login'] ?>">
+                                <input type="text" name="login" class="login__elem" placeholder="Логин" value="<?php  print(@$val['login']) ?>">
                                 <div class="text-danger err ">
                                             <?php
                                                 if(@$mess['login'] == TRUE){
@@ -85,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         </div>
                             </div>
                             <div>
-                                <input type="text" name="password" class="login__elem" placeholder="Пароль" value="<?php @$val['password'] ?>
+                                <input type="text" name="password" class="login__elem" placeholder="Пароль" value="<?php print(@$val['password'])?>">
                                 <div class="text-danger err ">
                                             <?php
                                                 if(@$mess['pass'] == TRUE){
