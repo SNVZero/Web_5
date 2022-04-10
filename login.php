@@ -47,9 +47,9 @@ if(mysqli_num_rows($check_user) > 0){
     <form  method="post" action="login.php">
         <div class="alert alert-danger"role="alert" <?php
          if( $_SESSION['message'] == FALSE){
-            print('hidden')
+            print('hidden');
          }else{
-            print(' ')
+            print(' ');
          }
          ?>>
             <?php
