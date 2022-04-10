@@ -22,7 +22,7 @@ if(isset($_POST['do_login'])){
     }
 }
 ?>
-<form  method="post" action="">
+<form  method="post" action="popuplogin.php">
     <div class="popup" id="popup">
         <div class="popup__body">
             <div class="popup__content">
