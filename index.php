@@ -254,10 +254,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
             setcookie('login',generateLogin(6));
             setcookie('password',generatePassword(6));
+            $log = $_COOKIE['login'];
+            $passw = $_COOKIE['password'];
 
             $users = R::dispense('users');
-            $users -> login = $_COOKIE['login'];
-            $users -> password = password_hash($_COOKIE['password'], PASSWORD_DEFAULT);
+            $users -> login =  $log;
+            $users -> password = password_hash($passw, PASSWORD_DEFAULT);
             R::store($users);
 
 
