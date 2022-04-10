@@ -1,6 +1,6 @@
 <?php
 //Почему-то проверка имени только строчными сисволами и не записываются абилити
-phpinfo();
+
 header('Content-Type: text/html; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -252,10 +252,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
             $message['success']= TRUE;
 
-            setcookie('login',generateLogin(6));
-            setcookie('password',generatePassword(6));
-            $log = $_COOKIE['login'];
-            $passw = $_COOKIE['password'];
+
+            $log = generateLogin(6);
+            $passw =generatePassword(6);
+            setcookie('login',$log);
+            setcookie('password',$passw);
 
             $users = R::dispense('users');
             $users->login = $log;
@@ -285,7 +286,7 @@ function generateLogin($length = 6)
 	return $login;
 }
 
-function generatePassword($length = 8){
+function generatePassword($length = 6){
     $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ1234567890';
     $numChars = strlen($chars);
     $password = '';
