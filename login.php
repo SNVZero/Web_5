@@ -1,6 +1,9 @@
 <?php
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
 session_start();
+if($_SERVER['REQUEST_METHOD'] == 'GET'){
+    $_SESSION['message'] = FALSE;
+}else if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
 require 'connection.php';
 
 $login = $_POST['login'];
@@ -42,10 +45,11 @@ if(mysqli_num_rows($check_user) > 0){
 
 
     <form  method="post" action="login.php">
-        <div class="alert alert-danger"role="alert"> >
+        <div class="alert alert-danger"role="alert" <?php if($_SESSION['message'] == FALSE){ print('hidden')}?>>
             <?php
-            if(@$_SESSION['message'] == TRUE)
+            if($_SESSION['message'] == TRUE){
                 print('Неправильный логин или пароль');
+            }
             ?>
         </div>
         <div class="popup" id="popup">
