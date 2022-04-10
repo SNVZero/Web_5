@@ -15,11 +15,8 @@
 <div class="wrapper">
         <header class="lock-padding">
             <div class="login__btn">
-                <?php if(isset($_SESSION['logged_user'])){
-                     $stmt = $db->prepare("SELECT name FROM USERS WHERE login = ?" );
-                     $stmt->execute($_SESSION['logged_user']);
-                     $name = $stmt->fetch(PDO::FETCH_LAZY);
-                     print('Здравствуйте, ' . $name);
+                <?php if(isset($_SESSION['user'])){
+                     print('Здравствуйте, ' . $_SESSION['user']['name']);
                      print('<a class="popup-link log__btn" href="/Web_5/logout.php">Выйти</a>');
                 }else{
                     print('<a class="popup-link log__btn" href="/Web_5/login.php">Войти</a>');
