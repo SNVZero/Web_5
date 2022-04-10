@@ -45,7 +45,7 @@ if(mysqli_num_rows($check_user) > 0){
 
 
     <form  method="post" action="login.php">
-        <div class="alert alert-danger"role="alert" <?php if( $_SESSION['message']== FALSE) print('hidden')  ?>>
+        <div class="alert alert-danger"role="alert" <?php if( $_SESSION['message'] == FALSE) print('hidden') else print(' ')  ?>>
             <?php
             if($_SESSION['message'] == TRUE){
                 print('Неправильный логин или пароль');
