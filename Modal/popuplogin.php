@@ -1,6 +1,4 @@
-<?php
-require ('Web_5/db.php');
-?>
+
 
 <div class="popup" id="popup">
             <div class="popup__body">
