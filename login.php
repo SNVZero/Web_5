@@ -6,7 +6,7 @@ require 'connection.php';
 $login = $_POST['login'];
 $password =$_POST['password'];
 
-$check_user = mysqli_query($connect, "SELECT * FROM USERS WHERE login = $login");
+$check_user = mysqli_query($connect, "SELECT * FROM USERS WHERE login = '$login'");
 if(mysqli_num_rows($check_user) > 0){
     $user = mysqli_fetch_assoc($check_user);
     $_SESSION['user'] = [
@@ -35,9 +35,9 @@ if(mysqli_num_rows($check_user) > 0){
 
 
     <form  method="post" action="login.php">
-        <div class="alert alert-danger"role="alert" <?php if(!$_SESSION['message']) print('hidden'); ?> >
+        <div class="alert alert-danger"role="alert" <?php if(!@$_SESSION['message']) print('hidden'); ?> >
             <?php
-                print($_SESSION['message']);
+                print(@$_SESSION['message']);
             ?>
         </div>
         <div class="popup" id="popup">
