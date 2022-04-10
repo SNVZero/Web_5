@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="col">
                     <div class="webform__form d-flex justify-content-center">
-                        <form id="form" class="form__body" method="post" action="">
+                        <form class="form__body" method="post" action="">
                             <div class="alert
                                 <?php
                                     if($message['success'] == TRUE){

@@ -78,3 +78,17 @@ document.addEventListener('keydown',function(e){
         popupClose(popupActive);
     }
 })
+
+const form = document.getElementById('form');
+async function formSend(e) {
+    e.preventDefault();
+
+    let error = formValidate(form);
+
+    let formData = new FormData(form);
+    let response = await fetch('popupscript.php',{
+        method: 'POST',
+        body: formData
+        });
+
+}
