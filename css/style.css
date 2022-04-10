@@ -251,22 +251,8 @@ body.lock {
     background-color: rgba(0, 0, 0, 0.7);
     top: 0;
     left: 0;
-    opacity: 0;
-    visibility: hidden;
-    overflow-y: auto;
-    overflow-x: hidden;
-    transition: all 0.8s ease 0s;
 }
 
-.popup.open{
-    opacity: 1;
-    visibility: visible;
-}
-
-.popup.open .popup__content{
-    transform: translate(0);
-    opacity: 1;
-}
 
 .popup__area{
     position: absolute;
@@ -291,20 +277,8 @@ body.lock {
     max-width: 800px;
     padding: 30px;
     position: relative;
-    transition: all 0.8s ease 0s;
-    opacity: 0;
-    transform: translate(0px,-100%);
 }
 
-.popup__close{
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    font-size: 20px;
-    color: #000;
-    text-decoration: none;
-
-}
 
 .popup__title{
     font-size: 25px;
