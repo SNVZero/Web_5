@@ -1,12 +1,12 @@
 <?php
-
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
 session_start();
 require 'connection.php';
 
 $login = $_POST['login'];
 $password = password_verify($_POST['password'],PASSWORD_DEFAULT);
 
-$check_user = mysqli_quety($connection, "SELECT * FROM USERS WHERE login = '$login' AND pass = '$password'");
+$check_user = mysqli_query($connection, "SELECT * FROM USERS WHERE login = '$login' AND pass = '$password'");
 if(mysqli_num_rows($check_user) > 0){
     $user = mysqli_fetch_assoc($check_user);
     $_SESSION['user'] = [
@@ -22,7 +22,7 @@ if(mysqli_num_rows($check_user) > 0){
     $_SESSION['message'] = 'Неверный логин или пароль';
     header('Location: login.php');
 }
-
+}
 ?>
 <!DOCTYPE html>
 <html>
