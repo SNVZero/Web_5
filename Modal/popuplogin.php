@@ -1,5 +1,5 @@
 <?php
-require ('/../db.php');
+require ('Web_5/db.php');
 ?>
 
 <div class="popup" id="popup">
