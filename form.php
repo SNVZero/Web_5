@@ -15,7 +15,7 @@
 <div class="wrapper">
         <header class="lock-padding">
             <div class="login__btn">
-                <a class="popup-link log__btn" href="#popup">ВОйти</a>
+                <a class="popup-link log__btn" href="#popup">Войти</a>
             </div>
         </header>
     </div>
