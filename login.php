@@ -2,7 +2,7 @@
 session_start();
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $_SESSION['message'] = FALSE;
-    $mess = empty($_COOKIE['name_value']) ? '0' : $_COOKIE['name_value'];
+    $mess = empty($_COOKIE['message']) ? '0' : $_COOKIE['message'];
     setcookie('message','1',1);
 }else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
