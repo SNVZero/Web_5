@@ -1,3 +1,11 @@
+<?php
+require ('../db.php');
+
+
+
+
+?>
+
 <div class="popup" id="popup">
             <div class="popup__body">
                 <div class="popup__content">
