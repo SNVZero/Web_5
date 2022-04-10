@@ -9,17 +9,22 @@ $password =$_POST['password'];
 $check_user = mysqli_query($connect, "SELECT * FROM USERS WHERE login = '$login'");
 if(mysqli_num_rows($check_user) > 0){
     $user = mysqli_fetch_assoc($check_user);
-    $_SESSION['user'] = [
-        "name" => $user['name'],
-        "email" => $user['mail'],
-        "bio" => $user['bio'],
-        "year" => $user['date'],
-        "gender" => $user['gender'],
-        "limbs" => $user['limbs']
-    ];
-    header('Location: index.php');
+    if(password_verify($password,$user['pass'])){
+        $_SESSION['user'] = [
+            "name" => $user['name'],
+            "email" => $user['mail'],
+            "bio" => $user['bio'],
+            "year" => $user['date'],
+            "gender" => $user['gender'],
+            "limbs" => $user['limbs']
+        ];
+        header('Location: index.php');
+    }else{
+        $_SESSION['message'] = TRUE;
+        header('Location: login.php');
+    }
 }else{
-    $_SESSION['message'] = 'Неверный логин или пароль';
+    $_SESSION['message'] = TRUE;
     header('Location: login.php');
 }
 }
@@ -28,16 +33,19 @@ if(mysqli_num_rows($check_user) > 0){
 <html>
    <head>
         <meta charset="utf-8">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
         <link rel="stylesheet" href="css/style.css">
         <title>Вход</title>
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
 <body>
 
 
     <form  method="post" action="login.php">
-        <div class="alert alert-danger"role="alert" <?php if(!@$_SESSION['message']) print('hidden'); ?> >
+        <div class="alert alert-danger"role="alert" <?php if(@$_SESSION['message'] == FALSE) print('hidden'); ?> >
             <?php
-                print(@$_SESSION['message']);
+            if(@$_SESSION['message'] == TRUE)
+                print('Неправильный логин или пароль');
             ?>
         </div>
         <div class="popup" id="popup">
