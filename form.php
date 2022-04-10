@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
         <link rel="stylesheet" href="css/style.css">
-        <title>Задание 4</title>
+        <title>Задание 5</title>
         <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
 
@@ -15,7 +15,17 @@
 <div class="wrapper">
         <header class="lock-padding">
             <div class="login__btn">
-                <a class="popup-link log__btn" href="#popup">Войти</a>
+                <?php if(isset($_SESSION['logged_user'])){
+                     $stmt = $db->prepare("SELECT name FROM USERS WHERE login = ?" );
+                     $stmt->execute($_SESSION['logged_user']);
+                     $name = $stmt->fetch(PDO::FETCH_LAZY);
+                     print('Здравствуйте, ' . $name);
+                     print('<a class="popup-link log__btn" href="/logout.php">Выйти</a>')
+                }else{
+                    print('<a class="popup-link log__btn" href="#popup">Войти</a>');
+                }
+                ?>
+
             </div>
         </header>
     </div>

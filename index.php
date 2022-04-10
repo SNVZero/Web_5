@@ -1,6 +1,6 @@
 <?php
 //Почему-то проверка имени только строчными сисволами и не записываются абилити
-
+require 'db.php';
 header('Content-Type: text/html; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -231,7 +231,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('ability_error','', 1);
         setcookie('checkbox_error', '', 1);
     }
-    require ('db.php');
 
         try{
             $log = generateLogin(6);
