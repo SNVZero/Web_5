@@ -254,12 +254,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             exit();
         }
 
+    if($message['success'] == TRUE){
+        $log = generateLogin(8);
+        $passw = generatePassword(5);
+    }
 
     setcookie('save','1');
 
     header('Location: index.php');
 
 }
+
+function generateLogin($length = 6)
+{
+	$chars = 'qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP';
+	$size = strlen($chars) - 1;
+	$login = '';
+	while($length--) {
+		$login .= $chars[random_int(0, $size)];
+	}
+	return $login;
+}
+
+function generatePassword($length = 8){
+    $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ1234567890';
+    $numChars = strlen($chars);
+    $password = '';
+    for ($i = 0; $i < $length; $i++) {
+      $password .= substr($chars, rand(1, $numChars) - 1, 1);
+    }
+    return $password;
+  }
 
 
 ?>
