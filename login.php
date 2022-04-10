@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $stmt = $db->prepare("SELECT login FROM USERS WHERE login = ?" );
     $login = $stmt->execute(array($_POST['login']));
-
+    var_dump($login);
 
     if($login != $_POST['login']){
         $errors = TRUE;
