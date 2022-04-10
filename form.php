@@ -296,7 +296,7 @@
             </div>
         </div>
     </div>
-    <?php require ('Modal/popuplogin.php'); ?>
+    <?php require ('popuplogin.php'); ?>
    <script src="js/script.js"></script>
 </body>
 </html>
