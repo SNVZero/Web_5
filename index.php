@@ -1,6 +1,6 @@
 <?php
 //Почему-то проверка имени только строчными сисволами и не записываются абилити
-
+phpinfo();
 header('Content-Type: text/html; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -258,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $passw = $_COOKIE['password'];
 
             $users = R::dispense('users');
-            $users->login =  $log;
+            $users->login = $log;
             $users->password = password_hash($passw, PASSWORD_DEFAULT);
             R::store($users);
 
