@@ -32,7 +32,7 @@ if(isset($_POST['do_login'])){
 <body>
 
 
-    <form  method="post" action="">
+    <form  method="post" action="login.php">
         <div class="popup" id="popup">
             <div class="popup__body">
                 <div class="popup__content">
