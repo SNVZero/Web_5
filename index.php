@@ -11,6 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('save','',1);
         $message['success'] = TRUE;
         $message['alert'] = FALSE;
+
+        $log = $_COOKIE['login'];
+        $passw = $_COOKIE['password'];
     }
 
     $error = array();
@@ -229,9 +232,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('checkbox_error', '', 1);
     }
 
-        $user = 'u46878';
-        $pass = '2251704';
-        $db = new PDO('mysql:host=localhost;dbname=u46878', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
+    $user = 'u46878';
+    $pass = '2251704';
+    $db = new PDO('mysql:host=localhost;dbname=u46878', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 
         try{
 
@@ -249,15 +252,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
             $message['success']= TRUE;
 
+            setcookie('login',generateLogin(6));
+            setcookie('password',generatePassword(6));
+
         }catch(PDOException $e){
             print('Error : ' . $e->getMessage());
             exit();
         }
-
-    if($message['success'] == TRUE){
-        $log = generateLogin(8);
-        $passw = generatePassword(5);
-    }
 
     setcookie('save','1');
 
