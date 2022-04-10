@@ -2,6 +2,7 @@
 session_start();
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $_SESSION['message'] = FALSE;
+    $mess = empty($_COOKIE['name_value']) ? '0' : $_COOKIE['name_value'];
     setcookie('message','1',1);
 }else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -50,14 +51,14 @@ if(mysqli_num_rows($check_user) > 0){
 
     <form  method="post" action="login.php">
         <div class="alert alert-danger"role="alert" <?php
-         if(empty($_COOKIE('message'))){
+         if($mess == '0'){
             print('hidden');
          }else{
             print(' ');
          }
          ?>>
             <?php
-            if(!empty($_COOKIE('message'))){
+            if($mess == '1'){
                 print('Неправильный логин или пароль');
             }
             ?>
