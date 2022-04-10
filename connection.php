@@ -1,3 +1,3 @@
 <?php
-    $connection = mysqli_connectio('localhost','u46878','2251704','u46878');
+    $connection = mysqli_connect('localhost','u46878','2251704','u46878');
 ?>
