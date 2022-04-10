@@ -1,7 +1,7 @@
 <?php
 require 'db.php';
 if(isset($_POST['do_login'])){
-    $mess = arrat();
+    $mess = array();
     $stmt = $db->prepare("SELECT login FROM USERS WHERE login = ?" );
     $stmt->execute($_POST['login']);
     $login = $stmt->fetch(PDO::FETCH_LAZY);
