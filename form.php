@@ -20,7 +20,7 @@
                      $stmt->execute($_SESSION['logged_user']);
                      $name = $stmt->fetch(PDO::FETCH_LAZY);
                      print('Здравствуйте, ' . $name);
-                     print('<a class="popup-link log__btn" href="/logout.php">Выйти</a>')
+                     print('<a class="popup-link log__btn" href="/logout.php">Выйти</a>');
                 }else{
                     print('<a class="popup-link log__btn" href="#popup">Войти</a>');
                 }
