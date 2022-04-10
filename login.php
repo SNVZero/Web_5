@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 
     $stmt = $db->prepare("SELECT login FROM USERS WHERE login = ?" );
-    $stmt->execute(array($_POST['login']));
-    $login = $stmt->fetch(PDO::FETCH_LAZY);
+    $login = $stmt->execute(array($_POST['login']));
+
 
     if($login != $_POST['login']){
         $errors = TRUE;
@@ -42,8 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('login_value',$_POST['login']);
 
         $stmt = $db->prepare("SELECT pass FROM USERS WHERE login = ?" );
-        $stmt->execute(array($_POST['login']));
-        $password = $stmt->fetch(PDO::FETCH_LAZY);
+        $password = $stmt->execute(array($_POST['login']));
         if(password_verify($_POST['password'],$password)){
             $_SESSION['logged_user'] = $login;
             header('Location: index.php');
@@ -57,6 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             exit();
         }
     }
+    setcookie('save_1','1');
+
+    header('Location: index.php');
 }
 
 ?>
@@ -70,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 <body>
 
 
-    <form  method="post" action="login.php">
+    <form  method="post" action="login. ">
         <div class="popup" id="popup">
             <div class="popup__body">
                 <div class="popup__content">
