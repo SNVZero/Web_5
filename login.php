@@ -1,64 +1,26 @@
 <?php
-require 'db.php';
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $mess = array();
-    if(!empty($_COOKIE['save_1'])){
-        setcookie('save_1','',1);
+
+session_start();
+require 'connection.php';
+
+$login = $_POST['login'];
+$password = password_verify($_POST['password'],PASSWORD_DEFAULT);
+
+$check_user = mysqli_quety($connection, "SELECT * FROM USERS WHERE login = '$login' AND pass = '$password'");
+if(mysqli_num_rows($check_user) > 0){
+    $user = mysqli_fetch_assoc($check_user);
+    $_SESSION['user']= {
+        "name" => $user['name'];
+        "email" => $user['mail'];
+        "bio" => $user['bio'];
+        "year" => $user['date'];
+        "gender" => $user['gender'];
+        "limbs" => $user['limbs'];
     }
-
-    $error = array();
-
-    $error['login'] = !empty($_COOKIE['login_error']);
-    $error['password'] = !empty($_COOKIE['password_error']);
-
-    if($error['login']){
-        setcookie('login_error','',1);
-        $mess['login'] = TRUE;
-    }
-
-    if($error['password']){
-        setcookie('password_error','',1);
-        $mess['password'] = TRUE;
-    }
-
-    $val = array();
-    $val['login'] = empty($_COOKIE['login_value']) ? '' : $_COOKIE['login_value'];
-    $val['password'] = empty($_COOKIE['password_value']) ? '' : $_COOKIE['password_value'];
-
-}else if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $errors = FALSE;
-
-
-    $stmt = $db->prepare("SELECT login FROM USERS WHERE login = ?" );
-    $login = $stmt->execute(array($_POST['login']));
-    echo var_dump($login);
-
-    if($login != $_POST['login']){
-        $errors = TRUE;
-        setcookie('login_value',$_POST['login']);
-        setcookie('login_error','1');
-
-    }else{
-        setcookie('login_value',$_POST['login']);
-
-        $stmt = $db->prepare("SELECT pass FROM USERS WHERE login = ?" );
-        $password = $stmt->execute(array($_POST['login']));
-        if(password_verify($_POST['password'],$password)){
-            $_SESSION['logged_user'] = $login;
-            header('Location: index.php');
-        }else{
-            setcookie('password_value',$_POST['password']);
-            setcookie('password_error','1');
-            $errors = TRUE;
-        }
-        if ($errors) {
-            header('Location: login.php');
-            exit();
-        }
-    }
-    setcookie('save_1','1');
-
     header('Location: index.php');
+}else{
+    $_SESSION['message'] = 'Неверный логин или пароль';
+    header('Location: login.php');
 }
 
 ?>
@@ -73,30 +35,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 
     <form  method="post" action="login.php">
+        <div class="alert alert-danger"role="alert" <?php if(!@$_SESSION['message']) print('hidden'); ?> >
+            <?php
+                print(@$_SESSION['message']);
+            ?>
+        </div>
         <div class="popup" id="popup">
             <div class="popup__body">
                 <div class="popup__content">
                     <div class="popup__title">Вход</div>
                     <div class="popup__text">
                             <div>
-                                <input type="text" name="login" class="login__elem" placeholder="Логин" value="<?php  print(@$val['login']) ?>">
-                                <div class="text-danger err ">
-                                            <?php
-                                                if(@$mess['login'] == TRUE){
-                                                    print('Неправильно введен логин');
-                                                }
-                                            ?>
-                                        </div>
+                                <input type="text" name="login" class="login__elem" placeholder="Логин">
                             </div>
                             <div>
-                                <input type="text" name="password" class="login__elem" placeholder="Пароль" value="<?php print(@$val['password'])?>">
-                                <div class="text-danger err ">
-                                            <?php
-                                                if(@$mess['pass'] == TRUE){
-                                                    print('Неправильно введен пароль');
-                                                }
-                                            ?>
-                                        </div>
+                                <input type="text" name="password" class="login__elem" placeholder="Пароль">
                             </div>
                         <div>
                             <input type="submit" class="popup__btn" value="Войти" name="do_login">
