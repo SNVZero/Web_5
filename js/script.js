@@ -1,4 +1,4 @@
-const popupLink = document.querySelector('.popup-link')
+/*const popupLink = document.querySelector('.popup-link')
 const body = document.querySelector('body');
 const lockPadding = document.querySelector(".lock-padding");
 
@@ -78,16 +78,4 @@ document.addEventListener('keydown',function(e){
         popupClose(popupActive);
     }
 })
-
-const form = document.getElementById('form');
-form.addEventListener('submit',formSend);
-async function formSend(e) {
-    e.preventDefault();
-
-    let formData = new FormData(form);
-    let response = await fetch('popupscript.php',{
-        method: 'POST',
-        body: formData
-        });
-
-}
+*/

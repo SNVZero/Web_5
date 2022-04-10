@@ -22,7 +22,7 @@
                      print('Здравствуйте, ' . $name);
                      print('<a class="popup-link log__btn" href="/logout.php">Выйти</a>');
                 }else{
-                    print('<a class="popup-link log__btn" href="#popup">Войти</a>');
+                    print('<a class="popup-link log__btn" href="/login.php">Войти</a>');
                 }
                 ?>
 
@@ -296,7 +296,6 @@
             </div>
         </div>
     </div>
-    <?php require ('popuplogin.php'); ?>
    <script src="js/script.js"></script>
 </body>
 </html>
