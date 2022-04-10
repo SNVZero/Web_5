@@ -258,8 +258,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $passw = $_COOKIE['password'];
 
             $users = R::dispense('users');
-            $users -> login =  $log;
-            $users -> password = password_hash($passw, PASSWORD_DEFAULT);
+            $users->login =  $log;
+            $users->password = password_hash($passw, PASSWORD_DEFAULT);
             R::store($users);
 
 
