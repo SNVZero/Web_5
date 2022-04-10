@@ -1,26 +1,62 @@
 <?php
 require 'db.php';
-if(isset($_POST['do_login'])){
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $mess = array();
+    if(!empty($_COOKIE['save_1'])){
+        setcookie('save_1','',1);
+    }
+
+    $error = array();
+
+    $error['login'] = !empty($_COOKIE['login_error']);
+    $error['password'] = !empty($_COOKIE['password_error']);
+
+    if($error['login']){
+        setcookie('login_error','',1);
+        $mess['login'] = TRUE;
+    }
+
+    if($error['password']){
+        setcookie('password_error','',1);
+        $mess['password'] = TRUE;
+    }
+
+    $val = array();
+    $val['login'] = empty($_COOKIE['login_value']) ? '' : $_COOKIE['login_value'];
+    $val['password'] = empty($_COOKIE['password_value']) ? '' : $_COOKIE['password_value'];
+
+}else if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $errors = FALSE;
+
+
     $stmt = $db->prepare("SELECT login FROM USERS WHERE login = ?" );
     $stmt->execute(array($_POST['login']));
     $login = $stmt->fetch(PDO::FETCH_LAZY);
+
     if($login != $_POST['login']){
-        $mass['login']= TRUE;
+        $errors = TRUE;
+        setcookie('login_value',$_POST['login']);
+
     }else{
-        $mess['login'] = FALSE;
+        setcookie('login_value',$_POST['login']);
+
         $stmt = $db->prepare("SELECT pass FROM USERS WHERE login = ?" );
         $stmt->execute(array($_POST['login']));
         $password = $stmt->fetch(PDO::FETCH_LAZY);
         if(password_verify($_POST['password'],$password)){
-            $mess['password']= FALSE;
             $_SESSION['logged_user'] = $login;
             header('Location: index.php');
         }else{
-            $mess['password']=TRUE;
+            setcookie('password_value',$_POST['password']);
+            $errors = TRUE;
+        }
+        if ($errors) {
+            header('Location: login.php');
+            exit();
         }
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -39,7 +75,7 @@ if(isset($_POST['do_login'])){
                     <div class="popup__title">Вход</div>
                     <div class="popup__text">
                             <div>
-                                <input type="text" name="login" class="login__elem" placeholder="Логин" value="<?php @$_POST['login'] ?>">
+                                <input type="text" name="login" class="login__elem" placeholder="Логин" value="<?php @$val['login'] ?>">
                                 <div class="text-danger err ">
                                             <?php
                                                 if(@$mess['login'] == TRUE){
@@ -49,7 +85,7 @@ if(isset($_POST['do_login'])){
                                         </div>
                             </div>
                             <div>
-                                <input type="text" name="password" class="login__elem" placeholder="Пароль">
+                                <input type="text" name="password" class="login__elem" placeholder="Пароль" value="<?php @$val['password'] ?>
                                 <div class="text-danger err ">
                                             <?php
                                                 if(@$mess['pass'] == TRUE){
