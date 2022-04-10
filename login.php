@@ -2,6 +2,7 @@
 session_start();
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $_SESSION['message'] = FALSE;
+    setcookie('message','1',1);
 }else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 require 'connection.php';
@@ -21,13 +22,16 @@ if(mysqli_num_rows($check_user) > 0){
             "gender" => $user['gender'],
             "limbs" => $user['limbs']
         ];
+        setcookie('message','1',1);
         header('Location: index.php');
     }else{
         $_SESSION['message'] = TRUE;
         header('Location: login.php');
+        setcookie('message','1');
     }
 }else{
     $_SESSION['message'] = TRUE;
+    setcookie('message','1');
     header('Location: login.php');
 }
 }
@@ -46,14 +50,14 @@ if(mysqli_num_rows($check_user) > 0){
 
     <form  method="post" action="login.php">
         <div class="alert alert-danger"role="alert" <?php
-         if( $_SESSION['message'] == FALSE){
+         if(empty($_COOKIE('message'))){
             print('hidden');
          }else{
             print(' ');
          }
          ?>>
             <?php
-            if($_SESSION['message'] == TRUE){
+            if(!empty($_COOKIE('message'))){
                 print('Неправильный логин или пароль');
             }
             ?>
