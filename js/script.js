@@ -80,10 +80,9 @@ document.addEventListener('keydown',function(e){
 })
 
 const form = document.getElementById('form');
+form.addEventListener('submit',formSend);
 async function formSend(e) {
     e.preventDefault();
-
-    let error = formValidate(form);
 
     let formData = new FormData(form);
     let response = await fetch('popupscript.php',{
