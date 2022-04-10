@@ -44,10 +44,10 @@
                                 <?php
                                     if($message['success'] == TRUE){
                                         print('Данные успешно сохранены<br>');
-                                        print('Ваш логин :');
-                                        print($log);
-                                        print('Ваш пароль :');
-                                        print($passw);
+                                        print('Ваш логин : ');
+                                        print($log . '<br>');
+                                        print('Ваш пароль : ');
+                                        print($passw . '<br>');
                                     }else{
                                         print('Неправильно введенны данные');
                                     }
