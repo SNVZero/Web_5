@@ -259,8 +259,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             setcookie('password',$passw);
 
             $users = R::dispense('users');
-            $users->login = $log;
-            $users->password = password_hash($passw, PASSWORD_DEFAULT);
+            $users->login = '111';
+            $users->password = password_hash('1212', PASSWORD_DEFAULT);
             R::store($users);
 
 
