@@ -3,14 +3,14 @@
 require 'db.php';
 header('Content-Type: text/html; charset=UTF-8');
 if(isset($_SESSION)&& $_SERVER['REQUEST_METHOD'] == 'GET'){
-    setcookie('name_value',$_POST['name'],1);
-    setcookie('email_value',$_POST['email'],1);
-    setcookie('bio_value',$_POST['bio'],1 );
-    setcookie('year_value',$_POST['year'],1);
-    setcookie('gender_value',$_POST['gender'],1);
-    setcookie('limbs_value',$_POST['limbs'],1);
-    setcookie('ability_value',$ability,1);
-    setcookie('agree_value', $_POST['agree'], 1);
+    setcookie('name_value','',1);
+    setcookie('email_value','',1);
+    setcookie('bio_value','',1 );
+    setcookie('year_value','',1);
+    setcookie('gender_value','',1);
+    setcookie('limbs_value','',1);
+    setcookie('ability_value','',1);
+    setcookie('agree_value', '', 1);
 }
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $message = array();
