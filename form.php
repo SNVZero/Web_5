@@ -58,7 +58,7 @@
                                     }else if($message['success'] == TRUE && isset($_SESSION['user'])){
                                         print('Данные успешно изменены<br>');
                                     }else{
-                                        print('Неправильно введенны данные');
+                                        print('Неправильно введены данные');
                                     }
                                 ?>
                             </div>
