@@ -1,5 +1,6 @@
 <?php
 //Удалять куки при успешной отправке, сделать испправление данных в таблице, валидация этих данных
+session_start();
 require 'db.php';
 header('Content-Type: text/html; charset=UTF-8');
 if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET'){
