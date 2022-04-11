@@ -18,7 +18,6 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
     $value_ability[2] = ' ';
     $value_ability[3] = ' ';
 
-
     }else{
         $value_ability = explode(',',$_COOKIE['ability_value']);
         $a = count($value_ability)-1;
@@ -27,6 +26,82 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
         }
     }
     $value['agree'] = empty($_COOKIE['agree_value']) ? '' : $_COOKIE['agree_value'];
+
+
+    $message = array();
+
+    $message['success'] = TRUE;
+    $message['alert'] = FALSE;
+
+
+
+    $error = array();
+
+    $error['name_empty'] = !empty($_COOKIE['name_error_empty']);
+    $error['name'] = !empty($_COOKIE['name_error']);
+    $error['email_empty'] = !empty($_COOKIE['email_error_empty']);
+    $error['email'] = !empty($_COOKIE['email_error']);
+    $error['email'] = !empty($_COOKIE['email_error']);
+    $error['bio'] = !empty($_COOKIE['bio_error']);
+    $error['year'] = !empty($_COOKIE['year_error']);
+    $error['gender'] = !empty($_COOKIE['gender_error']);
+    $error['limbs'] = !empty($_COOKIE['limbs_error']);
+    $error['ability'] = !empty($_COOKIE['ability_error']);
+    $error['agree'] = !empty($_COOKIE['agree_error']);
+
+    if($error['name_empty']){
+        setcookie('name_error_empty','',1);
+        $message['name_empty'] = TRUE;
+        $message['name'] = FALSE;
+    }
+
+    if($error['name']){
+        setcookie('name_error','',1);
+        $message['name_empty'] = FALSE;
+        $message['name'] = TRUE;
+    }
+
+    if($error['email_empty']){
+        setcookie('email_error_empty','',1);
+        $message['email_empty'] = TRUE;
+        $message['email'] = FALSE;
+    }
+
+    if($error['email']){
+        setcookie('email_error','',1);
+        $message['email'] = TRUE;
+        $message['email_empty'] = FALSE;
+    }
+
+    if($error['bio']){
+        setcookie('bio_error','',1);
+        $message['bio'] = TRUE;
+    }
+
+    if ($error['year']) {
+        setcookie('year_error', '', 100000);
+        $message['year'] = TRUE;
+    }
+
+    if ($error['gender']) {
+        setcookie('gender_error', '', 100000);
+        $message['gender'] = TRUE;
+    }
+
+    if ($error['limbs']) {
+        setcookie('limbs_error', '', 100000);
+        $message['limbs'] = TRUE;
+    }
+
+    if($error['ability']){
+        setcookie('ability_error','',1);
+        $message['ability'] = TRUE;
+    }
+
+    if($error['agree']){
+        setcookie('agree_error','',1);
+        $message['agree'] = TRUE;
+    }
 
     include('form.php');
 
