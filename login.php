@@ -16,7 +16,7 @@ if(mysqli_num_rows($check_user) > 0){
     $user = mysqli_fetch_assoc($check_user);
     if(password_verify($password,$user['pass'])){
         $id = $user['id'];
-        $check_power = mysqli_query($connect, "SELECT * FROM super_power WHERE human_id = '$id'");
+        $check_power = mysqli_query($connect, "SELECT * FROM super_power WHERE human_id = $id");
         $power =mysqli_fetch_assoc($check_power);
         $_SESSION['user'] = [
             "name" => $user['name'],
