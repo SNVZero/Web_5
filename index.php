@@ -31,7 +31,7 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
     $message = array();
 
     $message['success'] = TRUE;
-    $message['alert'] = FALSE;
+    $message['alert'] = TRUE;
 
 
 
