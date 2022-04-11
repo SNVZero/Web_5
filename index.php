@@ -1,18 +1,8 @@
 <?php
 //Удалять куки при успешной отправке, сделать испправление данных в таблице, валидация этих данных
-session_start();
 require 'db.php';
 header('Content-Type: text/html; charset=UTF-8');
-if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET'){
-    setcookie('name_value','',1);
-    setcookie('email_value','',1);
-    setcookie('bio_value','',1 );
-    setcookie('year_value','',1);
-    setcookie('gender_value','',1);
-    setcookie('limbs_value','',1);
-    setcookie('ability_value','',1);
-    setcookie('agree_value', '', 1);
-}
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $message = array();
     $message['alert'] = TRUE;
@@ -260,6 +250,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
             $stmt = $db->prepare("INSERT INTO super_power SET human_id = ?, superabilities = ?");
             $stmt -> execute([$count, $ability]);
+            setcookie('name_value','',1);
+            setcookie('email_value','',1);
+            setcookie('bio_value','',1 );
+            setcookie('year_value','',1);
+            setcookie('gender_value','',1);
+            setcookie('limbs_value','',1);
+            setcookie('ability_value','',1);
+            setcookie('agree_value', '', 1);
 
             $message['success']= TRUE;
 
