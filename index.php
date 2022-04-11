@@ -3,7 +3,35 @@
 require 'db.php';
 header('Content-Type: text/html; charset=UTF-8');
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
+    $value['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
+    $value['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
+    $value['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
+    $value['year'] = empty($_COOKIE['year_value']) ? '' : $_COOKIE['year_value'];
+    $value['gender'] = empty($_COOKIE['gender_value']) ? '' : $_COOKIE['gender_value'];
+    $value['limbs'] = empty($_COOKIE['limbs_value']) ? '' : $_COOKIE['limbs_value'];
+    if(empty($_COOKIE['ability_value'])){
+    $value_ability[] = array();
+
+    $value_ability[0] = ' ';
+    $value_ability[1] = ' ';
+    $value_ability[2] = ' ';
+    $value_ability[3] = ' ';
+
+
+    }else{
+        $value_ability = explode(',',$_COOKIE['ability_value']);
+        $a = count($value_ability)-1;
+        for($a ; $a < 4 ; $a++){
+            $value_ability[$a] = '';
+        }
+    }
+    $value['agree'] = empty($_COOKIE['agree_value']) ? '' : $_COOKIE['agree_value'];
+
+    include('form.php');
+
+}else if (!isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET') {
+
     $message = array();
     $message['alert'] = TRUE;
 
@@ -250,6 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
             $stmt = $db->prepare("INSERT INTO super_power SET human_id = ?, superabilities = ?");
             $stmt -> execute([$count, $ability]);
+
             setcookie('name_value','',1);
             setcookie('email_value','',1);
             setcookie('bio_value','',1 );
@@ -258,7 +287,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             setcookie('limbs_value','',1);
             setcookie('ability_value','',1);
             setcookie('agree_value', '', 1);
-
             $message['success']= TRUE;
 
 

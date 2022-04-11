@@ -27,7 +27,17 @@ if(mysqli_num_rows($check_user) > 0){
             "limbs" => $user['limbs'],
             "ability" =>$power['superabilities']
         ];
+
+        setcookie('name_value',$_SESSION['user']['name'],time() + 12 * 30 * 24 * 60 * 60);
+        setcookie('email_value',$_SESSION['user']['email'], time() + 12 * 30 * 24 * 60 * 60);
+        setcookie('bio_value',$_SESSION['user']['bio'], time() + 12 * 30 * 24 * 60 * 60);
+        setcookie('year_value',$_SESSION['user']['year'], time() + 12 * 30 * 24 * 60 * 60);
+        setcookie('gender_value',$_SESSION['user']['gender'], time() + 12 * 30 * 24 * 60 * 60);
+        setcookie('limbs_value',$_SESSION['user']['limbs'],time() + 12 * 30 * 24 * 60 * 60) ;
+        setcookie('ability_value',$_SESSION['user']['ability'], time() + 12 * 30 * 24 * 60 * 60);
+        setcookie('agree_value', '1', time() + 12 * 30 * 24 * 60 * 60) ;
         setcookie('message','1',1);
+
         header('Location: index.php');
     }else{
         $_SESSION['message'] = TRUE;
