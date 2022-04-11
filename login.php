@@ -15,13 +15,17 @@ $check_user = mysqli_query($connect, "SELECT * FROM USERS WHERE login = '$login'
 if(mysqli_num_rows($check_user) > 0){
     $user = mysqli_fetch_assoc($check_user);
     if(password_verify($password,$user['pass'])){
+        $id = $user['id'];
+        $check_power = mysqli_query($connect, "SELECT * FROM super_power WHERE human_id = '$id'");
+        $power =mysqli_fetch_assoc($check_power);
         $_SESSION['user'] = [
             "name" => $user['name'],
             "email" => $user['mail'],
             "bio" => $user['bio'],
             "year" => $user['date'],
             "gender" => $user['gender'],
-            "limbs" => $user['limbs']
+            "limbs" => $user['limbs'],
+            "ability" =>$power['superabilities']
         ];
         setcookie('message','1',1);
         header('Location: index.php');
