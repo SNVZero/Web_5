@@ -19,6 +19,7 @@ if(mysqli_num_rows($check_user) > 0){
         $check_power = mysqli_query($connect, "SELECT * FROM super_power WHERE human_id = $id");
         $power =mysqli_fetch_assoc($check_power);
         $_SESSION['user'] = [
+            "id" => $user['id'],
             "name" => $user['name'],
             "email" => $user['mail'],
             "bio" => $user['bio'],

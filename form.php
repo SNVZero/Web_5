@@ -49,12 +49,14 @@
                                 ?>
                             >
                                 <?php
-                                    if($message['success'] == TRUE){
+                                    if($message['success'] == TRUE && !isset($_SESSION['user'])) {
                                         print('Данные успешно сохранены<br>');
                                         print('Ваш логин : ');
                                         print($log . '<br>');
                                         print('Ваш пароль : ');
                                         print($passw . '<br>');
+                                    }else if($message['success'] == TRUE && isset($_SESSION['user'])){
+                                        print('Данные успешно изменены<br>');
                                     }else{
                                         print('Неправильно введенны данные');
                                     }

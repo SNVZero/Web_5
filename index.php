@@ -1,5 +1,5 @@
 <?php
-//Удалять куки при успешной отправке, сделать испправление данных в таблице, валидация этих данных
+// сделать испправление данных в таблице, валидация этих данных
 require 'db.php';
 header('Content-Type: text/html; charset=UTF-8');
 
@@ -29,11 +29,14 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
 
 
     $message = array();
-
-    $message['success'] = TRUE;
     $message['alert'] = TRUE;
 
+    if(!empty($_COOKIE['save'])){
+        setcookie('save','',1);
+        $message['success'] = TRUE;
+        $message['alert'] = FALSE;
 
+    }
 
     $error = array();
 
@@ -215,7 +218,147 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
 
     include('form.php');
 
-}else if($_SERVER['REQUEST_METHOD'] == 'POST'){
+}else if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST' ){
+    $regname ='/^[а-яЁё]+$/iu';
+    $errors = FALSE;
+    $power1=in_array('s1',$_POST['capabilities']) ? '1' : '0';
+    $power2=in_array('s2',$_POST['capabilities']) ? '1' : '0';
+    $power3=in_array('s3',$_POST['capabilities']) ? '1' : '0';
+    $power4=in_array('s4',$_POST['capabilities']) ? '1' : '0';
+
+
+    if($power1 == 1){
+        $ability = 'immortal' . ',';
+    }
+
+    if($power2 == 1 && !empty($ability)){
+        $ability .= 'noclip' . ',';
+    }else if($power2 == 1 && empty($ability)){
+        $ability = 'noclip' . ',';
+    }
+
+    if($power3 == 1 && !empty($ability)){
+        $ability .= 'flying' . ',';
+    }else if($power3 == 1 && empty($ability)){
+        $ability = 'flying' . ',';
+    }
+
+    if($power4 == 1 && !empty($ability)){
+        $ability .= 'lazer' . ',';
+    }else if($power4 == 1 && empty($ability)){
+        $ability = 'lazer' . ',';
+    }
+
+    if(empty(htmlentities($_POST['name']))){
+        setcookie('name_error_empty','1',time() + 24 * 60 * 60);
+        $errors = TRUE;
+    }else if(!preg_match($regname, $_POST['name'])){
+        setcookie('name_error','1',time() + 24 * 60 * 60);
+        setcookie('name_value',$_POST['name']);
+        $errors = TRUE;
+    }else{
+        setcookie('name_value',$_POST['name'],time() + 24 * 60 * 60 * 30 * 12 );
+    }
+
+    if(empty($_POST['email'])){
+        setcookie('email_error_empty','1',time() + 24 * 60 * 60);
+        $errors = TRUE;
+    }else if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+        setcookie('email_error','1',time() + 24 * 60 * 60);
+        setcookie('email_value',$_POST['email']);
+        $errors = TRUE;
+    }else{
+        setcookie('email_value',$_POST['email'],time() + 24 * 60 * 60 * 30 * 12 );
+    }
+
+    if(empty($_POST['bio'])){
+        setcookie('bio_error','1',time() + 24 * 60 *60);
+        $errors = TRUE;
+    }else{
+        setcookie('bio_value',$_POST['bio'],time() + 24 * 60 * 60 * 30 * 12 );
+    }
+
+
+    if(empty($_POST['year'])){
+        setcookie('year_error','1',time() + 24 * 60 *60);
+        $errors = TRUE;
+    }else{
+        setcookie('year_value',$_POST['year'],time() + 24 * 60 * 60 * 30 * 12 );
+    }
+
+    if(empty($_POST['gender'])){
+        setcookie('gender_error','1',time() + 24 * 60 *60);
+        $errors = TRUE;
+    }else{
+        setcookie('gender_value',$_POST['gender'],time() + 24 * 60 * 60 * 30 * 12 );
+    }
+
+    if(empty($_POST['limbs'])){
+        setcookie('limbs_error','1',time() + 24 * 60 *60);
+        $errors = TRUE;
+    }else{
+        setcookie('limbs_value',$_POST['limbs'],time() + 24 * 60 * 60 * 30 * 12 );
+    }
+
+    if(empty($ability)){
+        setcookie('ability_error','1',time() + 24 * 60 *60);
+        $errors = TRUE;
+    }else{
+        setcookie('ability_value',$ability,time() + 24 * 60 * 60 * 30 * 12 );
+    }
+
+    if (empty($_POST['agree'])) {
+        setcookie('agree_error', '1', time() + 24 * 60 * 60);
+        $errors = TRUE;
+      }
+      else {
+        setcookie('agree_value', $_POST['agree'], time() + 12 * 30 * 24 * 60 * 60);
+      }
+
+
+
+    if ($errors) {
+        header('Location: index.php');
+        $message['success'] = FALSE;
+        $message['alert'] = FALSE;
+
+        exit();
+    }
+    else {
+        setcookie('name_error_empty','', 1);
+        setcookie('name_error', '', 100000);
+        setcookie('email_error_empty','',1);
+        setcookie('email_error', '', 1);
+        setcookie('bio_error','', 1);
+        setcookie('year_error', '', 1);
+        setcookie('gender_error', '', 1);
+        setcookie('limbs_error', '', 1);
+        setcookie('ability_error','', 1);
+        setcookie('checkbox_error', '', 1);
+    }
+
+
+    try{
+        $id = $_SESSION['user']['id'];
+
+        $stmt = $db->prepare("UPDATE USERS SET name = ?, mail = ?, bio = ?, date = ?, gender = ?, limbs = ? WHERE id = ?");
+        $stmt -> execute(array$_POST['name'],$_POST['email'],$_POST['bio'],$_POST['year'],$_POST['gender'],$_POST['limbs'], $id));
+
+        $stmt = $db->prepare("UPDATE  super_power SET superabilities = ? WHERE human_id = ?");
+        $stmt -> execute([$ability,$id]);
+
+    }catch(PDOException $e){
+        print('Error : ' . $e->getMessage());
+        exit();
+    }
+
+setcookie('save','1');
+
+header('Location: index.php');
+
+
+
+}else if(!isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
 
     $regname ='/^[а-яЁё]+$/iu';
     $errors = FALSE;
