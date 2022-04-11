@@ -2,7 +2,7 @@
 //Удалять куки при успешной отправке, сделать испправление данных в таблице, валидация этих данных
 require 'db.php';
 header('Content-Type: text/html; charset=UTF-8');
-if(isset($_SESSION)&& $_SERVER['REQUEST_METHOD'] == 'GET'){
+if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET'){
     setcookie('name_value','',1);
     setcookie('email_value','',1);
     setcookie('bio_value','',1 );
