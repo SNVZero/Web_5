@@ -1,9 +1,12 @@
 <?php
-// сделать испправление данных в таблице, валидация этих данных
-require 'db.php';
+
+require 'connect/db.php';//Подключение базы данных из файла db.php
 header('Content-Type: text/html; charset=UTF-8');
 
-if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
+if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){ //GET запрос с залогининым пользователем
+
+    // Получаем данные залогиненного пользователя из куки, которые были созданы во время входа и взяты из сессии
+
     $value['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
     $value['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
     $value['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
@@ -31,13 +34,13 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
     $message = array();
     $message['alert'] = TRUE;
 
-    if(!empty($_COOKIE['save'])){
+    if(!empty($_COOKIE['save'])){//Проверка были ли внесены изменения в бд
         setcookie('save','',1);
         $message['success'] = TRUE;
         $message['alert'] = FALSE;
 
     }
-
+     //Получаем сообщения об ошибках, нужно для дальнейшей валидации данных
     $error = array();
 
     $error['name_empty'] = !empty($_COOKIE['name_error_empty']);
@@ -125,14 +128,14 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
         $message['success'] = FALSE;
     }
 
-    include('form.php');
+    include('form.php');//Подключаем форму
 
-}else if (!isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET') {
+}else if (!isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET') {//GET запрос для пользователя который не прошел логин
 
     $message = array();
     $message['alert'] = TRUE;
 
-    if(!empty($_COOKIE['save'])){
+    if(!empty($_COOKIE['save'])){//Проверка были ли внесены данные в бд
         setcookie('save','',1);
         $message['success'] = TRUE;
         $message['alert'] = FALSE;
@@ -141,7 +144,7 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
         $passw = $_COOKIE['password'];
     }
 
-    $error = array();
+    $error = array();//Получаем сообщения об ошибках, нужно для дальнейшей валидации данных
 
     $error['name_empty'] = !empty($_COOKIE['name_error_empty']);
     $error['name'] = !empty($_COOKIE['name_error']);
@@ -229,7 +232,7 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
     }
 
     $value = array();
-
+// Получаем данные пользователя из куки, которые были введены пользователем, после успешного сохранения данные и куки удаляются
     $value['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
     $value['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
     $value['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
@@ -256,15 +259,17 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
 
     include('form.php');
 
-}else if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST' ){
-    $regname ='/^[а-яЁё]+$/iu';
-    $errors = FALSE;
+}else if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST' ){//POST запрос для залогиненного пользователя
+    $regname ='/^[а-яЁё]+$/iu';//Регулярное выражение для проверки имени
+    $errors = FALSE;//Переменная для ошибок
+
+    //Получение способностей введеных пользователем
     $power1=in_array('s1',$_POST['capabilities']) ? '1' : '0';
     $power2=in_array('s2',$_POST['capabilities']) ? '1' : '0';
     $power3=in_array('s3',$_POST['capabilities']) ? '1' : '0';
     $power4=in_array('s4',$_POST['capabilities']) ? '1' : '0';
 
-
+    //Способности сохраняются в единную строку которая позже будет сохранена в бд
     if($power1 == 1){
         $ability = 'immortal' . ',';
     }
@@ -287,6 +292,8 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
         $ability = 'lazer' . ',';
     }
 
+
+    //Валидация полей формы
     if(empty(htmlentities($_POST['name']))){
         setcookie('name_error_empty','1',time() + 24 * 60 * 60);
         $errors = TRUE;
@@ -354,7 +361,7 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
       }
 
 
-
+    //Проверка на наличие ошибок при валидации
     if ($errors) {
         header('Location: index.php');
         $message['success'] = FALSE;
@@ -362,7 +369,7 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
 
         exit();
     }
-    else {
+    else {//Если ошибок не было производится удаление куки об ошибках
         setcookie('name_error_empty','', 1);
         setcookie('name_error', '', 100000);
         setcookie('email_error_empty','',1);
@@ -376,10 +383,10 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
     }
 
 
-    try{
+    try{//Блок изменения данных о пользователе,которые он предпочел изменить
         $id = $_SESSION['user']['id'];
 
-        $stmt = $db->prepare("UPDATE USERS SET name = ?, mail = ?, bio = ?, date = ?, gender = ?, limbs = ? WHERE id = ?");
+        $stmt = $db->prepare("UPDATE users SET name = ?, mail = ?, bio = ?, date = ?, gender = ?, limbs = ? WHERE id = ?");
         $stmt -> execute(array($_POST['name'],$_POST['email'],$_POST['bio'],$_POST['year'],$_POST['gender'],$_POST['limbs'], $id));
 
         $stmt = $db->prepare("UPDATE  super_power SET superabilities = ? WHERE human_id = ?");
@@ -390,13 +397,13 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
         exit();
     }
 
-setcookie('save','1');
+setcookie('save','1');//Создания куки об успешном изменении
 
-header('Location: index.php');
+header('Location: index.php');//Переадресация на главную страницу
 
 
 
-}else if(!isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
+}else if(!isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST'){//POST запрос для пользователя без логина
 
     $regname ='/^[а-яЁё]+$/iu';
     $errors = FALSE;
@@ -516,17 +523,17 @@ header('Location: index.php');
         setcookie('checkbox_error', '', 1);
     }
 
-        try{
+        try{//Блок записи в бд, данных введеных пользователем
             $log = generateLogin(6);
             $passw =generatePassword(6);
             $hash = password_hash($passw, PASSWORD_DEFAULT);
             setcookie('login',$log);
             setcookie('password',$passw);
 
-            $stmt = $db->prepare("INSERT INTO USERS SET login = ?, pass = ?, name = ?, mail = ?, bio = ?, date = ?, gender = ?, limbs = ?");
+            $stmt = $db->prepare("INSERT INTO users SET login = ?, pass = ?, name = ?, mail = ?, bio = ?, date = ?, gender = ?, limbs = ?");
             $stmt -> execute(array($log,$hash,$_POST['name'],$_POST['email'],$_POST['bio'],$_POST['year'],$_POST['gender'],$_POST['limbs']));
 
-            $res = $db->query("SELECT max(id) FROM USERS");
+            $res = $db->query("SELECT max(id) FROM users");
             $row = $res->fetch();
             $count = (int) $row[0];
 
@@ -557,7 +564,7 @@ header('Location: index.php');
 
 }
 
-function generateLogin($length = 6)
+function generateLogin($length = 6)//Функция создания рандомного логина
 {
 	$chars = 'qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP';
 	$size = strlen($chars) - 1;
@@ -568,7 +575,7 @@ function generateLogin($length = 6)
 	return $login;
 }
 
-function generatePassword($length = 6){
+function generatePassword($length = 6){//Функция создания рандомного пароля
     $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ1234567890';
     $numChars = strlen($chars);
     $password = '';

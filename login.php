@@ -1,24 +1,25 @@
 <?php
-session_start();
-if($_SERVER['REQUEST_METHOD'] == 'GET'){
+session_start();//Старт сесси
+if($_SERVER['REQUEST_METHOD'] == 'GET'){//GET запрос для проверки логина и пароля
     $_SESSION['message'] = FALSE;
     $mess = empty($_COOKIE['message']) ? '0' : $_COOKIE['message'];
     setcookie('message','1',1);
-}else if($_SERVER['REQUEST_METHOD'] == 'POST'){
+}else if($_SERVER['REQUEST_METHOD'] == 'POST'){//POST запрос для отправки логина и пароля
 
-require 'connection.php';
+require 'connect/connection.php';//Подключение файла connection.php, в котором создано sqli соеденение с бд
 
 $login = $_POST['login'];
 $password =$_POST['password'];
 
-$check_user = mysqli_query($connect, "SELECT * FROM USERS WHERE login = '$login'");
-if(mysqli_num_rows($check_user) > 0){
-    $user = mysqli_fetch_assoc($check_user);
-    if(password_verify($password,$user['pass'])){
-        $id = $user['id'];
-        $check_power = mysqli_query($connect, "SELECT * FROM super_power WHERE human_id = $id");
-        $power =mysqli_fetch_assoc($check_power);
+$check_user = mysqli_query($connect, "SELECT * FROM users WHERE login = '$login'");//Берем все поля из таблицы у которых логин совпадает с введеныи
+if(mysqli_num_rows($check_user) > 0){//Проверка на то существует ли такой логин
+    $user = mysqli_fetch_assoc($check_user);//Берем именнованые поля у совпадающего логина
+    if(password_verify($password,$user['pass'])){// Проверка на совпадение пароля из таблицы с введеным
+        $id = $user['id'];//берем айди логина
+        $check_power = mysqli_query($connect, "SELECT * FROM super_power WHERE human_id = $id");//Проверяем наличие способностей
+        $power =mysqli_fetch_assoc($check_power);//берем эти способности
         $_SESSION['user'] = [
+            //Создаем именнованую сессию user и вносим в нее данные из таблицы
             "id" => $user['id'],
             "name" => $user['name'],
             "email" => $user['mail'],
@@ -29,6 +30,7 @@ if(mysqli_num_rows($check_user) > 0){
             "ability" =>$power['superabilities']
         ];
 
+        //Создаем куки для дальнейшего заполнения полей, данными прежде введенными пользователем
         setcookie('name_value',$_SESSION['user']['name'],time() + 12 * 30 * 24 * 60 * 60);
         setcookie('email_value',$_SESSION['user']['email'], time() + 12 * 30 * 24 * 60 * 60);
         setcookie('bio_value',$_SESSION['user']['bio'], time() + 12 * 30 * 24 * 60 * 60);
@@ -40,12 +42,12 @@ if(mysqli_num_rows($check_user) > 0){
         setcookie('message','1',1);
 
         header('Location: index.php');
-    }else{
+    }else{//Если пароль не совпадает выбрасывает сообщение об ошибке
         $_SESSION['message'] = TRUE;
         header('Location: login.php');
         setcookie('message','1');
     }
-}else{
+}else{//Если такой логин не найден выбрасывает сообщение об ошибке
     $_SESSION['message'] = TRUE;
     setcookie('message','1');
     header('Location: login.php');

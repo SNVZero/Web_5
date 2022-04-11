@@ -1,7 +1,8 @@
 <?php
-require 'db.php';
-unset($_SESSION['user']);
+require 'connect/db.php';
+unset($_SESSION['user']);//Удаляем сессию текущего пользователя
 
+//Удаляем куки в которых хранились данные о пользователе
 setcookie('name_value','',1);
 setcookie('email_value','',1);
 setcookie('bio_value','',1 );
