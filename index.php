@@ -342,7 +342,7 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){
         $id = $_SESSION['user']['id'];
 
         $stmt = $db->prepare("UPDATE USERS SET name = ?, mail = ?, bio = ?, date = ?, gender = ?, limbs = ? WHERE id = ?");
-        $stmt -> execute(array$_POST['name'],$_POST['email'],$_POST['bio'],$_POST['year'],$_POST['gender'],$_POST['limbs'], $id));
+        $stmt -> execute(array($_POST['name'],$_POST['email'],$_POST['bio'],$_POST['year'],$_POST['gender'],$_POST['limbs'], $id));
 
         $stmt = $db->prepare("UPDATE  super_power SET superabilities = ? WHERE human_id = ?");
         $stmt -> execute([$ability,$id]);
