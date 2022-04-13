@@ -391,6 +391,18 @@ if(isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'GET' ){ //GET за
 
         $stmt = $db->prepare("UPDATE  super_power SET superabilities = ? WHERE human_id = ?");
         $stmt -> execute([$ability,$id]);
+	    
+	     $_SESSION['user'] = [
+            //Создаем именнованую сессию user и вносим в нее данные из таблицы
+            "id" =>$id,
+            "name" => $_POST['name'],
+            "email" => $_POST['email'],
+            "bio" => $_POST['bio'],
+            "year" => $_POST['year'],
+            "gender" => $_POST['gender'],
+            "limbs" => $_POST['limbs'],
+            "ability" =>$ability
+        ];
 
     }catch(PDOException $e){
         print('Error : ' . $e->getMessage());
